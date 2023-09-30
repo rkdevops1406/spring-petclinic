@@ -3,7 +3,7 @@ pipeline{
     stages{
         stage("code"){
             steps{
-                git"https://github.com/rkdevops1406/spring-petclinic.git"
+               git branch: 'main', credentialsId: 'gitcred', url: 'https://github.com/rkdevops1406/spring-petclinic.git'
             }
         }
         stage("Build"){

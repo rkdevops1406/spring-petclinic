@@ -17,7 +17,33 @@ pipeline{
         }
         stage("Deploy to tomcat"){
             steps{
+                sshagent(['pipeline{
+    agent any
+    stages{
+        stage("code"){
+            steps{
+                git"https://github.com/rkdevops1406/spring-petclinic.git"
+            }
+        }
+        stage("Build"){
+            steps{
+                
+                sh 'mvn clean package'
+                sh 'pwd'
+                sh 'ls -l'
+               
+            }
+        }
+        stage("Deploy to tomcat"){
+            steps{
                 sshagent(['3dc1c3c3-26d4-46dd-9cd2-2fc62facaafc']) {
+                sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/Pipeline-1/target/maven-web-application.war  ec2-user@18.191.119.167:/opt/apache-tomcat-9.0.80/webapps'   
+    
+                }
+            }
+        }
+    }  
+}    {
                 sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/Pipeline-1/target/maven-web-application.war  ec2-user@18.191.119.167:/opt/apache-tomcat-9.0.80/webapps'   
     
                 }
